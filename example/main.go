@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"time"
 
-	"rfkill"
+	"github.com/avegner/rfkill"
 )
 
 var errUsage = errors.New("invalid usage")
@@ -78,7 +78,7 @@ func run() error {
 
 	switch cmd := flag.Arg(0); cmd {
 	case "list":
-		devs, err := rfkill.List()
+		devs, err := rfkill.List(context.Background())
 		if err != nil {
 			return err
 		}

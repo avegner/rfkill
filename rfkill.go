@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+//nolint:funlen
 func List(ctx context.Context) ([]*Device, error) {
 	fd, err := openEventDev()
 	if err != nil {

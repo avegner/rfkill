@@ -21,7 +21,7 @@ func init() {
 }
 
 func TestList(t *testing.T) {
-	devs, err := rfkill.List()
+	devs, err := rfkill.List(context.Background())
 	if err != nil {
 		t.Fatalf("got err '%v', want nil err", err)
 	}
@@ -77,7 +77,7 @@ func TestEvents(t *testing.T) {
 
 func BenchmarkList(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		if _, err := rfkill.List(); err != nil {
+		if _, err := rfkill.List(context.Background()); err != nil {
 			b.Fatalf("list err: %v", err)
 		}
 	}
