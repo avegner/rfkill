@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// List returns an accurate list of currently existing radio devices.
 //nolint:funlen
 func List(ctx context.Context) ([]*Device, error) {
 	fd, err := openEventDev()
@@ -77,14 +78,17 @@ func List(ctx context.Context) ([]*Device, error) {
 	}
 }
 
+// Block blocks device(s) according to the given block option.
 func Block(option BlockOption) error {
 	return block(1, option)
 }
 
+// Unblock unblocks device(s) according to the given block option.
 func Unblock(option BlockOption) error {
 	return block(0, option)
 }
 
+// Events reports rfkill events until context is cancelled.
 func Events(ctx context.Context, pollInterval time.Duration, callback func(ev *Event)) error {
 	fd, err := openEventDev()
 	if err != nil {
@@ -163,6 +167,7 @@ func updateDevState(dev *Device, ev *rfkillEvent) {
 	dev.SoftBlock = ev.Soft > 0
 }
 
+// Device describes radio device.
 type Device struct {
 	ID        uint32
 	Type      RadioType
@@ -171,6 +176,7 @@ type Device struct {
 	Name      string
 }
 
+// Event describes rfkill event.
 type Event struct {
 	ID        uint32
 	Op        EventOp
@@ -179,6 +185,7 @@ type Event struct {
 	SoftBlock bool
 }
 
+// RadioType is type for radio types.
 type RadioType uint8
 
 const (
@@ -193,6 +200,7 @@ const (
 	NFCRadio
 )
 
+// EventOp is type for event operations.
 type EventOp uint8
 
 const (
@@ -202,8 +210,10 @@ const (
 	ChangeAllOp
 )
 
+// BlockOption is type for block option.
 type BlockOption func(ev *rfkillEvent)
 
+// WithID option sets device to block or unblock by ID
 func WithID(id uint) BlockOption {
 	return func(ev *rfkillEvent) {
 		ev.Op = uint8(ChangeOp)
@@ -211,6 +221,7 @@ func WithID(id uint) BlockOption {
 	}
 }
 
+// WithType option sets devices to block or unblock by type
 func WithType(typ RadioType) BlockOption {
 	return func(ev *rfkillEvent) {
 		ev.Op = uint8(ChangeAllOp)

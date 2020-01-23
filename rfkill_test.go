@@ -1,3 +1,4 @@
+//nolint:wsl,gochecknoinits,gochecknoglobals,gomnd
 package rfkill_test
 
 import (

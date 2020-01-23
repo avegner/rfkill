@@ -1,3 +1,4 @@
+//nolint:wsl,gochecknoglobals,gomnd
 package main
 
 import (
